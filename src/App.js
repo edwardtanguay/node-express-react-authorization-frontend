@@ -22,6 +22,7 @@ function App() {
 
 	return (
 		<div className="App">
+			<h1>MERN Showcase App</h1>
 			<form>
 				<fieldset>
 					<legend>Login</legend>
