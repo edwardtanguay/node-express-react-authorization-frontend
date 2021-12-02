@@ -14,10 +14,17 @@ function App() {
 		let _password = e.target.value;
 		setPassword(_password);
 	}
-	
-	const handleButton = (e) => {
+
+	const handleButton = async (e) => {
 		e.preventDefault();
-		console.log('access backend');
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ username, password })
+		};
+		const response = await fetch('http://localhost:3003/login', requestOptions);
+		const data = await response.json();
+		console.log(data);
 	}
 
 	return (

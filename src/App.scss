@@ -37,7 +37,7 @@ body {
 
 				.row {
 					display: flex;
-					align-content: start;
+					align-content: flex-start;
 					padding: 5px;
 					label {
 						&::after {
