@@ -42,7 +42,7 @@ function App() {
 			method: 'POST',
 			credentials: "include",
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ loginFormField_login, loginFormField_password }),
+			body: JSON.stringify({ login: loginFormField_login, password: loginFormField_password }),
 		};
 		const response = await fetch('http://localhost:3003/login', requestOptions);
 		if (response.ok) {
@@ -81,8 +81,8 @@ function App() {
 							<fieldset>
 								<legend>Login</legend>
 								<div className="row">
-									<label htmlFor="username">Username</label>
-									<input type="text" id="username" value={loginFormField_login} 	onChange={handle_loginFormField_login} />
+									<label htmlFor="login">Login</label>
+									<input type="text" id="login" value={loginFormField_login} 	onChange={handle_loginFormField_login} />
 								</div>
 								<div className="row">
 									<label htmlFor="password">Password</label>
