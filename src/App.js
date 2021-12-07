@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import './App.scss';
 
 function App() {
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
+	const [loginFormField_login, setLoginFormField_login] = useState('');
+	const [loginFormField_password, setLoginFormField_password] = useState('');
 	const [currentUser, setCurrentUser] = useState({});
 
 	useEffect(() => {
@@ -14,8 +14,9 @@ function App() {
 			};
 			const response = await fetch('http://localhost:3003/currentuser', requestOptions);
 			if (response.ok) {
-				const _currentUser = await response.json();
-				setCurrentUser(prev => ({ ...prev, ..._currentUser }));
+				const data = await response.json();
+				console.log(data);
+				setCurrentUser(prev => ({ ...prev, ...data.user }));
 			}
 		})();
 	}, []);
@@ -25,35 +26,34 @@ function App() {
 		return accessGroupArray.includes(accessGroup);
 	}
 
-	const handleUsername = (e) => {
-		let _username = e.target.value;
-		setUsername(_username);
+	const handle_loginFormField_login = (e) => {
+		let login = e.target.value;
+		setLoginFormField_login(login);
 	}
 
-	const handlePassword = (e) => {
-		let _password = e.target.value;
-		setPassword(_password);
+	const handle_loginFormField_password = (e) => {
+		let password = e.target.value;
+		setLoginFormField_login(password);
 	}
 
-	const handleButton = async (e) => {
+	const handle_loginForm_loginButton = async (e) => {
 		e.preventDefault();
 		const requestOptions = {
 			method: 'POST',
 			credentials: "include",
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ username, password })
+			body: JSON.stringify({ loginFormField_login, loginFormField_password }),
 		};
 		const response = await fetch('http://localhost:3003/login', requestOptions);
 		if (response.ok) {
 			const _currentUser = await response.json();
-			console.log(_currentUser);
 			setCurrentUser(prev => ({ ...prev, ..._currentUser }));
-			setUsername('');
-			setPassword('');
+			setLoginFormField_login('');
+			setLoginFormField_password('');
 		}
 	}
 
-	const handleLogout = async (e) => {
+	const handle_logoutForm_logoutButton = async (e) => {
 		const requestOptions = {
 			method: 'GET',
 			credentials: 'include'
@@ -67,14 +67,14 @@ function App() {
 
 	return (
 		<div className="App">
-			{currentUser.username && (
+			{currentUser.login && (
 				<>
 					<h1>MERN Showcase App</h1>
 					{currentUserIsInGroup('loggedInUsers') && (
 						<h2>{currentUser.firstName} {currentUser.lastName}</h2>
 					)}
 					{currentUserIsInGroup('loggedInUsers') && (
-						<div><button onClick={handleLogout}>Logout</button></div>
+						<div><button onClick={handle_logoutForm_logoutButton}>Logout</button></div>
 					)}
 					{currentUserIsInGroup('loggedOutUsers') && (
 						<form>
@@ -82,14 +82,14 @@ function App() {
 								<legend>Login</legend>
 								<div className="row">
 									<label htmlFor="username">Username</label>
-									<input type="text" id="username" value={username} onChange={handleUsername} />
+									<input type="text" id="username" value={loginFormField_login} 	onChange={handle_loginFormField_login} />
 								</div>
 								<div className="row">
 									<label htmlFor="password">Password</label>
-									<input type="password" id="password" value={password} onChange={handlePassword} />
+									<input type="password" id="password" value={loginFormField_password} onChange={handle_loginFormField_password} />
 								</div>
 								<div className="buttonRow">
-									<button onClick={handleButton}>Submit</button>
+									<button onClick={handle_loginForm_loginButton}>Submit</button>
 								</div>
 							</fieldset>
 						</form>
